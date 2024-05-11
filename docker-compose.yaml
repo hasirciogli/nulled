@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  # PHP-FPM servisi
+  php-fpm:
+    build: ./php-fpm-docker
+    volumes:
+      - .:/var/www/html
+    networks:
+      - laravel_network
+    depends_on:
+      - database
+
+  # Nginx servisi
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+      - ./dockerize/conf.d:/etc/nginx/conf.d
+    networks:
+      - laravel_network
+    depends_on:
+      - database
+      - php-fpm
+
+  database:
+    image: mysql:latest
+    ports:
+      - "2211:3306"
+    volumes:
+      - ./database-data:/var/lib/mysql:rw
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+    networks:
+      - laravel_network
+
+networks:
+  laravel_network:
+    driver: bridge
