@@ -1,1 +1,1 @@
-docker exec nulled-nginx-1 chown www-data:www-data -R /var/www/html
+docker exec xenforo-docker-compose-nginx-1 chown www-data:www-data -R /var/www/html
